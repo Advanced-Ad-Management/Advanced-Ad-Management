@@ -10,13 +10,13 @@
                                     $id     = (Params::getParam('id'))? Params::getParam('id') : '';
                                     $conn   = getConnection();
                                     $rSecretOk   = $conn->osc_dbFetchResult("SELECT * FROM %st_item_adManage_limit WHERE fk_i_item_id = '%d' AND r_secret = '%s'", DB_TABLE_PREFIX, $id, $rSecret);
-                                    $item   = $conn->osc_dbFetchResult("SELECT * FROM %st_item WHERE pk_i_id = '%s' AND ((s_secret = '%s' AND fk_i_user_id IS NULL) OR (fk_i_user_id = '%d'))", DB_TABLE_PREFIX, $id, $secret, osc_logged_user_id());
-           if ( count($item) != 0 && $rSecretOk['r_secret'] != '') {
+                                    $item   = $conn->osc_dbFetchResult("SELECT * FROM %st_item WHERE pk_i_id = '%d' AND ((s_secret = '%s' OR (fk_i_user_id = '%d'))", DB_TABLE_PREFIX, $id, $secret, osc_logged_user_id());
+           if ( $item['pk_i_id'] != 0 && $rSecretOk['r_secret'] != '') {
               if($rSecretOk['r_times'] < osc_adManage_repubTimes() || osc_adManage_repubTimes() == 0 ){
 					$date  = date('Y-m-d H:i:s');
 					$rTimes = $rSecretOk['r_times'] + 1;
 					$conn->osc_dbExec("UPDATE %st_item SET dt_pub_date = '%s' WHERE pk_i_id = '%d' ", DB_TABLE_PREFIX,$date,$id);
-					$conn->osc_dbExec("UPDATE %st_item_adManage_limit SET r_secret = '%s', r_times = '%d' WHERE fk_i_item_id = '%d' ", DB_TABLE_PREFIX,adManageRandomString(), $rTimes, $id);
+					$conn->osc_dbExec("UPDATE %st_item_adManage_limit SET r_secret = '%s', r_times = '%d' WHERE fk_i_item_id = '%d' ", DB_TABLE_PREFIX, osc_genRandomPassword(), $rTimes, $id);
 					$rTimes = 0;
 
                          if((osc_adManage_payperpost() == 1) ){

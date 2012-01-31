@@ -7,7 +7,7 @@
     $dao_preference = new Preference(); 
     foreach($allItem as $itemB) {
         $r_secret = '';
-        $r_secret = adManageRandomString();
+        $r_secret = osc_genRandomPassword();
         $conn->osc_dbExec("REPLACE INTO %st_item_adManage_limit (fk_i_item_id, r_secret, r_times) VALUES (%d, '%s', %d)", DB_TABLE_PREFIX, $itemB['fk_i_item_id'], $r_secret, 0 );
     }
     $dao_preference->update(array("s_value" => '1'), array("s_section" => "plugin-item_adManage", "s_name" => "adManageed_installed")) ;

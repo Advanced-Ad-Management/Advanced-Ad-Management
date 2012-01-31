@@ -28,10 +28,10 @@ surely as haste leads to poverty. Proverbs 21:5
       osc_set_preference('adManageed_expireEmail', '1', 'plugin-item_adManage', 'INTEGER');
       osc_set_preference('adManageed_deleteDays', '0', 'plugin-item_adManage', 'INTEGER');
       //used for email template
-      $conn->osc_dbExec("INSERT INTO %st_pages (s_internal_name, b_indelible, dt_pub_date) VALUES ('email_ad_expire', 1, NOW() )", DB_TABLE_PREFIX);
-      $conn->osc_dbExec("INSERT INTO %st_pages_description (fk_i_pages_id, fk_c_locale_code, s_title, s_text) VALUES (%d, '%s', '{WEB_TITLE} - Your ad {ITEM_TITLE} is about to expire.', '<p>Hi {CONTACT_NAME}!</p>\r\n<p> </p>\r\n<p>Your ad is about to expire, click on the link if you would like to extend your ad {REPUBLISH_URL}</p><p> </p>\r\n<p>This is an automatic email, Please do not respond to this email.</p>\r\n<p> </p>\r\n<p>Thanks</p>\r\n<p>{WEB_TITLE}</p>')", DB_TABLE_PREFIX, $conn->get_last_id(), osc_language());
-      $conn->osc_dbExec("INSERT INTO %st_pages (s_internal_name, b_indelible, dt_pub_date) VALUES ('email_ad_expired', 1, NOW() )", DB_TABLE_PREFIX);
-      $conn->osc_dbExec("INSERT INTO %st_pages_description (fk_i_pages_id, fk_c_locale_code, s_title, s_text) VALUES (%d, '%s', '{WEB_TITLE} - Your ad {ITEM_TITLE} has expired.', '<p>Hi {CONTACT_NAME}!</p>\r\n<p> </p>\r\n<p>Your ad has expired. You may renew your ad by clicking on the link {REPUBLISH_URL}. Otherwise your ad will be permanently deleted in {PERM_DELETED} days</p><p> </p>\r\n<p>This is an automatic email, Please do not respond to this email.</p>\r\n<p> </p>\r\n<p>Thanks</p>\r\n<p>{WEB_TITLE}</p>')", DB_TABLE_PREFIX, $conn->get_last_id(), osc_language()); 
+      $conn->osc_dbExec("INSERT IGNORE INTO %st_pages (s_internal_name, b_indelible, dt_pub_date) VALUES ('email_ad_expire', 1, NOW() )", DB_TABLE_PREFIX);
+      $conn->osc_dbExec("INSERT IGNORE INTO %st_pages_description (fk_i_pages_id, fk_c_locale_code, s_title, s_text) VALUES (%d, '%s', '{WEB_TITLE} - Your ad {ITEM_TITLE} is about to expire.', '<p>Hi {CONTACT_NAME}!</p>\r\n<p> </p>\r\n<p>Your ad is about to expire, click on the link if you would like to extend your ad {REPUBLISH_URL}</p><p> </p>\r\n<p>This is an automatic email, Please do not respond to this email.</p>\r\n<p> </p>\r\n<p>Thanks</p>\r\n<p>{WEB_TITLE}</p>')", DB_TABLE_PREFIX, $conn->get_last_id(), osc_language());
+      $conn->osc_dbExec("INSERT IGNORE INTO %st_pages (s_internal_name, b_indelible, dt_pub_date) VALUES ('email_ad_expired', 1, NOW() )", DB_TABLE_PREFIX);
+      $conn->osc_dbExec("INSERT IGNORE INTO %st_pages_description (fk_i_pages_id, fk_c_locale_code, s_title, s_text) VALUES (%d, '%s', '{WEB_TITLE} - Your ad {ITEM_TITLE} has expired.', '<p>Hi {CONTACT_NAME}!</p>\r\n<p> </p>\r\n<p>Your ad has expired. You may renew your ad by clicking on the link {REPUBLISH_URL}. Otherwise your ad will be permanently deleted in {PERM_DELETED} days</p><p> </p>\r\n<p>This is an automatic email, Please do not respond to this email.</p>\r\n<p> </p>\r\n<p>Thanks</p>\r\n<p>{WEB_TITLE}</p>')", DB_TABLE_PREFIX, $conn->get_last_id(), osc_language()); 
    }
    
    function adManage_uninstall () {
@@ -50,16 +50,17 @@ surely as haste leads to poverty. Proverbs 21:5
       //remove email template
       $page_id = $conn->osc_dbFetchResult("SELECT * FROM %st_pages WHERE s_internal_name = 'email_ad_expire'", DB_TABLE_PREFIX);
       $conn->osc_dbExec("DELETE FROM %st_pages_description WHERE fk_i_pages_id = %d", DB_TABLE_PREFIX, $page_id['pk_i_id']);
-      $conn->osc_dbExec("DELETE FROM %st_pages WHERE s_internal_name = 'email_ad_expire'", DB_TABLE_PREFIX);
-      $page_id = $conn->osc_dbFetchResult("SELECT * FROM %st_pages WHERE s_internal_name = 'email_ad_expired'", DB_TABLE_PREFIX);
-      $conn->osc_dbExec("DELETE FROM %st_pages_description WHERE fk_i_pages_id = %d", DB_TABLE_PREFIX, $page_id['pk_i_id']);
+      $id_page = $conn->osc_dbFetchResult("SELECT * FROM %st_pages WHERE s_internal_name = 'email_ad_expired'", DB_TABLE_PREFIX);
+      $conn->osc_dbExec("DELETE FROM %st_pages_description WHERE fk_i_pages_id = %d", DB_TABLE_PREFIX, $id_page['pk_i_id']);
+      
+      $conn->osc_dbExec("DELETE FROM %st_pages WHERE s_internal_name = 'email_ad_expire'", DB_TABLE_PREFIX);      
       $conn->osc_dbExec("DELETE FROM %st_pages WHERE s_internal_name = 'email_ad_expired'", DB_TABLE_PREFIX);
    }
    
    function item_adManage_posted($catId= '', $itemId) {
       $conn = getConnection() ;
       $r_secret = '';
-      $r_secret = adManageRandomString();
+      $r_secret = osc_genRandomPassword();
       $conn->osc_dbExec("REPLACE INTO %st_item_adManage_limit (fk_i_item_id, r_secret, r_times) VALUES (%d, '%s', %d)", DB_TABLE_PREFIX, $itemId, $r_secret, 0 );
    }
    
@@ -135,19 +136,7 @@ surely as haste leads to poverty. Proverbs 21:5
                 
             }
    }
-   
-   // function to generate our random secret code for email
-   function adManageRandomString() {
-    $length = 6;
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-    $string = '';    
-    for ($p = 0; $p < $length; $p++) {
-        @$string .= $characters[mt_rand(0, strlen($characters))];
-    }
-
-    return $string;
-   } 
-   
+      
    /** This function is modelled after the one found in hItems.php
      *
      * Return true if item is expired, else return false
