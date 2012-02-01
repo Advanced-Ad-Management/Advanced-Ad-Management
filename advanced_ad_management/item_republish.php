@@ -10,7 +10,7 @@
                                     $id     = (Params::getParam('id'))? Params::getParam('id') : '';
                                     $conn   = getConnection();
                                     $rSecretOk   = $conn->osc_dbFetchResult("SELECT * FROM %st_item_adManage_limit WHERE fk_i_item_id = '%d' AND r_secret = '%s'", DB_TABLE_PREFIX, $id, $rSecret);
-                                    $item   = $conn->osc_dbFetchResult("SELECT * FROM %st_item WHERE pk_i_id = '%d' AND ((s_secret = '%s' OR (fk_i_user_id = '%d'))", DB_TABLE_PREFIX, $id, $secret, osc_logged_user_id());
+                                    $item   = $conn->osc_dbFetchResult("SELECT * FROM %st_item WHERE pk_i_id = '%d' AND (s_secret = '%s' OR fk_i_user_id = '%d')", DB_TABLE_PREFIX, $id, $secret, osc_logged_user_id());
            if ( $item['pk_i_id'] != 0 && $rSecretOk['r_secret'] != '') {
               if($rSecretOk['r_times'] < osc_adManage_repubTimes() || osc_adManage_repubTimes() == 0 ){
 					$date  = date('Y-m-d H:i:s');
