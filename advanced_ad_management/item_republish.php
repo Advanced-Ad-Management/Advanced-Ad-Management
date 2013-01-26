@@ -1,70 +1,131 @@
-<?php 
+<?php
     //set include
     define('ABS_PATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
-    require_once ABS_PATH . 'oc-load.php'; 
-         
-               $repub = Params::getParam('repub');    
-                 if ($repub == 'republish') {   // repost item
-                                    $secret = (Params::getParam('secret'))? Params::getParam('secret') : '';
-                                    $rSecret = (Params::getParam('rSecret'))? Params::getParam('rSecret') : '';
-                                    $id     = (Params::getParam('id'))? Params::getParam('id') : '';
-                                    $conn   = getConnection();
-                                    $rSecretOk   = $conn->osc_dbFetchResult("SELECT * FROM %st_item_adManage_limit WHERE fk_i_item_id = '%d' AND r_secret = '%s'", DB_TABLE_PREFIX, $id, $rSecret);
-                                    $item   = $conn->osc_dbFetchResult("SELECT * FROM %st_item WHERE pk_i_id = '%d' AND (s_secret = '%s' OR fk_i_user_id = '%d')", DB_TABLE_PREFIX, $id, $secret, osc_logged_user_id());
-           if ( $item['pk_i_id'] != 0 && $rSecretOk['r_secret'] != '') {
-              if($rSecretOk['r_times'] < osc_adManage_repubTimes() || osc_adManage_repubTimes() == 0 ){
-					$date  = date('Y-m-d H:i:s');
-					$rTimes = $rSecretOk['r_times'] + 1;
-					$conn->osc_dbExec("UPDATE %st_item SET dt_pub_date = '%s' WHERE pk_i_id = '%d' ", DB_TABLE_PREFIX,$date,$id);
-					$conn->osc_dbExec("UPDATE %st_item_adManage_limit SET r_secret = '%s', r_times = '%d' WHERE fk_i_item_id = '%d' ", DB_TABLE_PREFIX, osc_genRandomPassword(), $rTimes, $id);
-					$rTimes = 0;
+    require_once ABS_PATH . 'oc-load.php';
 
-                         if((osc_adManage_payperpost() == 1) ){
-                            if(osc_item_adManage_freeRepubs() == 0 || $rSecretOk['r_times'] >= osc_item_adManage_freeRepubs()) {
-					             // This checks to see if there is a db table "t_paypal_publish", if so, set republished item as "unpaid"
-			                  $check_if_paypal_enabled = $conn->osc_dbFetchResult("SELECT b_paid FROM %st_paypal_publish WHERE fk_i_item_id = %d", DB_TABLE_PREFIX, $id);
-			                  if ($check_if_paypal_enabled) {
-				                 $conn->osc_dbExec("UPDATE %st_paypal_publish SET dt_date = '%s', b_paid =  '0' WHERE fk_i_item_id = %d", DB_TABLE_PREFIX, date('Y-m-d H:i:s'), $id);
-			                  }
-			                  }
-			                }
+	$repub = Params::getParam('repub');
 
-                                        $conn->osc_dbExec("UPDATE %st_item_adManage_limit SET ex_email = '%d' WHERE fk_i_item_id = '%d'", DB_TABLE_PREFIX, 0, $id);
-                                        osc_add_flash_ok_message( __('Item has been republished','adManage') ) ;
-                                        $conn->osc_dbExec("INSERT %st_item_adManage_log (fk_i_item_id, log_date, error_action) VALUES ('%d', '%s', '%s')", DB_TABLE_PREFIX, $id, date('Y-m-d H:i:s'), 'Item Republished. ' . date('Y-m-d H:i:s'));                                  
-                                        header("Location: " . osc_base_url(true) . '?page=item&id=' . $id);
-                                        exit;
-    	                                    
-                                    //else statement if the number of republish times has been reached
-                                    } else{
-                                       // add a flash message [ITEM NO EXISTE]
-                                        osc_add_flash_error_message( __('Sorry, this ad has reached the max number of republishes.','adManage')) ;
-                                        $conn->osc_dbExec("INSERT %st_item_adManage_log (fk_i_item_id, log_date, error_action) VALUES ('%d', '%s', '%s')", DB_TABLE_PREFIX, $id, date('Y-m-d H:i:s'), 'Item reached max num of republishes. ' . date('Y-m-d H:i:s'));
-                                        if(osc_is_web_user_logged_in()) {
-                                           // REDIRECT
-                                           header("Location: " . osc_user_list_items_url());
-    	                                    
-                                        } else {
-                                           // REDIRECT
-                                           header("Location: " . osc_base_url(true));
-                                        }                                    
-                                    }
-                                    } else {
-                                        // add a flash message [ITEM NO EXISTE]
-                                        osc_add_flash_error_message( __('Sorry, we don\'t have any items with that ID or the secret key is incorrect.','adManage')) ;
-                                        $conn->osc_dbExec("INSERT %st_item_adManage_log (fk_i_item_id, log_date, error_action) VALUES ('%d', '%s', '%s')", DB_TABLE_PREFIX, $id, date('Y-m-d H:i:s'), 'Item does not exist or incorrect secret key. ' . date('Y-m-d H:i:s'));
-                                        if(osc_is_web_user_logged_in()) {
-                                           // REDIRECT
-                                           header("Location: " . osc_user_list_items_url());    	                                  
-                                        } else {
-                                           // REDIRECT
-    	                                     header("Location: " . osc_base_url(true));
-                                        }
-                                    }
+	$secret = (Params::getParam('secret'))? Params::getParam('secret') : '';
+	$rSecret = (Params::getParam('rSecret'))? Params::getParam('rSecret') : '';
+	$id     = (Params::getParam('id'))? Params::getParam('id') : '';
 
-         
-         } else {
-            $conn->osc_dbExec("INSERT %st_item_adManage_log (fk_i_item_id, log_date, error_action) VALUES ('%d', '%s', '%s')", DB_TABLE_PREFIX, $id, date('Y-m-d H:i:s'), 'Problem with url no action taken. ' . date('Y-m-d H:i:s'));
-         }
-        
+	$rSecretOk  = ModelAAM::newInstance()->getLimitUser($id, true, $rSecret);
+	$item   	= ModelAAM::newInstance()->getRepubItem($id, $secret);
+	$cat 		= Category::newInstance()->findByPrimaryKey($item['fk_i_category_id']);
+	$dt_expires = strtotime ( '+' . $cat['i_expiration_days'] . ' days') ;
+	$dt_expire 	= date('Y-m-d H:i:s', $dt_expires);
+	$date  = date('Y-m-d H:i:s');
+
+if ($repub == 'republish') {   // republish item
+ModelAAM::newInstance()->insertLog('User started item republish');
+	if ( ($item['pk_i_id'] != 0 || $item['pk_i_id'] != null) && ($rSecretOk['r_secret'] != '' || $rSecretOk['r_secret'] != null) ) {
+		if($rSecretOk['r_times'] < osc_advanced_ad_management_repubTimes() || osc_advanced_ad_management_repubTimes() == 0 ){
+
+			$rTimes = $rSecretOk['r_times'] + 1;
+			// updates the items expiration date.
+			$newExp = ModelAAM::newInstance()->aam_updateExpirationDate($id, date('Y-m-d H:i:s', strtotime("+" . $cat['i_expiration_days'] . " days")) );
+			if( $newExp != false && $newExp != '9999-12-31 23:59:59'){
+				ModelAAM::newInstance()->insertLog('Items expire date updated exp date ' . $newExp, $id);
+			} else {
+				$errorMess = ModelAAM::newInstance()->dao->getErrorDesc();
+				ModelAAM::newInstance()->insertLog('Item expire date not updated.' , $id);
+				ModelAAM::newInstance()->insertLog($errorMess, $id);
+			}
+			// republishes the item.
+			ModelAAM::newInstance()->updateLimitRepub(osc_genRandomPassword(), $rTimes, $id);
+
+			ModelAAM::newInstance()->insertLog('Item has been republished', $id);
+
+			confirm_email($id, $cat['i_expiration_days']);
+			admin_confirm_email($id);
+			ModelAAM::newInstance()->insertLog('Conformation email sent', $id);
+
+			$rTimes = 0;
+
+				 if((osc_advanced_ad_management_payperpost() == 1) ){
+					if(osc_item_advanced_ad_management_freeRepubs() == 0 || $rSecretOk['r_times'] >= osc_item_advanced_ad_management_freeRepubs()) {
+
+			          // This checks to see if there is a db table "t_paypal_publish", if so, set republished item as "unpaid"
+	                  $check_if_paypal_enabled = osc_get_preference('pay_per_post', 'paypal');
+	                  if ($check_if_paypal_enabled == 1) {
+		                 ModelAAM::newInstance()->updatePayPalPub($id);
+		                 ModelAAM::newInstance()->insertLog('Paypal publish table updated', $id);
+	                  }
+	                }
+	             }
+
+				osc_add_flash_ok_message( __('Item has been re published','advanced_ad_management') ) ;
+				Item::newInstance()->clearStat($id, 'expired') ;
+				ModelAAM::newInstance()->insertLog('Item Re published. ' . date('Y-m-d H:i:s'), $id);
+				ModelAAM::newInstance()->insertLog('User Ended item republish Succesful. :)');
+				// REDIRECT
+				header("Location: " . osc_item_url_advanced($id));
+
+
+		//else statement if the number of republish times has been reached
+		} else{
+		   // add a flash message [REPUB LIMIT REACHED]
+			osc_add_flash_error_message( __('Sorry, this ad has reached the max number of re publishes.','advanced_ad_management')) ;
+			ModelAAM::newInstance()->insertLog('Item reached max num of republishes. ' . date('Y-m-d H:i:s'), $id);
+
+			// REDIRECT
+		    header("Location: " . osc_item_url_advanced($id));
+		}
+	} else {
+		// add a flash message [ITEM NO EXISTE]
+		if ( $id == 0 || $id == null ) {
+			ModelAAM::newInstance()->insertLog('Item does not exist. ' . date('Y-m-d H:i:s'), $id);
+		} else if ($rSecretOk['r_secret'] == '' || $rSecretOk['r_secret'] == null) {
+			ModelAAM::newInstance()->insertLog('No secret key was provided. ' . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"], $id);
+		}
+		$refId = ModelAAM::newInstance()->dao->insertedId();
+		osc_add_flash_error_message( __('Sorry, an error occurred trying to republish your listing. <br /><br />Please contact the admin. Reference # ' . $refId,'advanced_ad_management')) ;
+		ModelAAM::newInstance()->insertLog('User Ended item republish with an error. :(');
+
+		   // REDIRECT
+		   header("Location: " . osc_base_url());
+	}
+
+
+} elseif($repub == 'admin_repub') {
+
+	if( osc_is_admin_user_logged_in() ) {
+		ModelAAM::newInstance()->insertLog('Admin started item republish');
+		// updates the items expiration date.
+			$newExp = ModelAAM::newInstance()->aam_updateExpirationDate($id, date('Y-m-d H:i:s', strtotime("+" . $cat['i_expiration_days'] . " days")) );
+			if( $newExp != false && $newExp != '9999-12-31 23:59:59'){
+				ModelAAM::newInstance()->insertLog('Admin: Items expire date updated exp date ' . $newExp, $id);
+			} else {
+				ModelAAM::newInstance()->insertLog('Admin: Item expire date not updated.' , $id);
+			}
+		// republishes the item.
+		if(ModelAAM::newInstance()->updateLimitRepub(osc_genRandomPassword(), $rSecretOk['r_times'], $id) ) {
+			ModelAAM::newInstance()->insertLog('The admin has re published the listing', $id);
+		}
+
+		if((osc_advanced_ad_management_payperpost() == 1) ){
+			if(osc_item_advanced_ad_management_freeRepubs() == 0 || $rSecretOk['r_times'] >= osc_item_advanced_ad_management_freeRepubs()) {
+
+	          // This checks to see if paypal pay per post is enabled. If yes then marks the item as needing to be paid again.
+			  $check_if_paypal_enabled = osc_get_preference('pay_per_post', 'paypal');
+			  if ($check_if_paypal_enabled == 1) {
+				 ModelAAM::newInstance()->updatePayPalPub($id);
+				 ModelAAM::newInstance()->insertLog('Paypal publish table updated', $id);
+			  }
+			}
+		 }
+
+		osc_add_flash_ok_message( __('Item has been re published','advanced_ad_management'), 'admin' ) ;
+		Item::newInstance()->clearStat($id, 'expired') ;
+		ModelAAM::newInstance()->insertLog('The admin Re published the item. ' . date('Y-m-d H:i:s'), $id);
+		ModelAAM::newInstance()->insertLog('Admin ended item republish successful. :)');
+		header("Location: " . $_SERVER['HTTP_REFERER']);
+	}
+
+} else {
+	ModelAAM::newInstance()->insertLog('Problem with url no action taken. ' . date('Y-m-d H:i:s') . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"], $id);
+	// REDIRECT
+	header("Location: " . osc_base_url());
+}
+
 ?>

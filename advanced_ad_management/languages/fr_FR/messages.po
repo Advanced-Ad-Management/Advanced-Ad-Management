@@ -1,34 +1,37 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Advanced Ad Management\n"
+"Project-Id-Version: OSClass\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-07 22:23-0600\n"
 "PO-Revision-Date: \n"
 "Last-Translator: JChapman <siouxfallsrummages@gmail.com>\n"
-"Language-Team: Jesse, JChapman\n"
+"Language-Team: OSClass <info@osclass.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: English\n"
-"X-Poedit-Country: United States\n"
+"X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2\n"
+"Plural-Forms: nplurals=2; plural=n !=1;\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: /var/www/osclass30/oc-content/plugins/advanced_ad_management\n"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/item_republish.php:57
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/item_republish.php:118
+#, fuzzy
 msgid "Item has been re published"
-msgstr ""
+msgstr "L’annonce  a été  rééditée"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/item_republish.php:68
+#, fuzzy
 msgid "Sorry, this ad has reached the max number of re publishes."
-msgstr ""
+msgstr "Désolé, cette annonce a atteint le nombre max de republication."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/item_republish.php:82
+#, fuzzy
 msgid "Sorry, an error occurred trying to republish your listing. <br /><br />Please contact the admin. Reference # "
-msgstr ""
+msgstr "Désolé tous les éléments en notre possession  avec votre Identité secrète est incorrecte"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:28
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:570
@@ -37,59 +40,64 @@ msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:31
 msgid "What is the Advanced Ad Management Plugin?"
-msgstr ""
+msgstr "C’est quoi  le Plugin de gestion avancée des annonces?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:34
+#, fuzzy
 msgid "The Advanced Ad Management Plugin gives the user the option to republish there ad after it expires."
-msgstr ""
+msgstr " Le Plugin de gestion avancée des annonces donne à l'utilisateur la possibilité de republier son annonce  après  expiration. Plus d'infos bientôt."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:37
 msgid "Do I need to edit any files for Advanced Ad Management plugin to work?"
-msgstr ""
+msgstr "Ai-je besoin d'éditer tous les fichiers pour la gestion avancée des annonces  pour  que ce module fonctionne ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:40
 msgid "Yes, You need to edit the user-items.php file and add the following line."
-msgstr ""
+msgstr "Oui, vous devez modifier le fichier de user-items.php et ajoutez la ligne suivante."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:46
 msgid "Find the following code and add the above code between the tags but before the &lt;/p&gt; tag."
-msgstr ""
+msgstr "Trouver le code suivant et ajoutez le code ci-dessus entre les balises mais avant le & lt ; /p & gt ; balise."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:52
 msgid "How do I show Republished date once an ad has been republished?"
-msgstr ""
+msgstr "Comment puis-je indiquer la date publiée à nouveau une annonce a été réédité?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:55
 msgid "Find the following code in the item.php file of your theme folder."
-msgstr ""
+msgstr "Trouvez le code suivant dans le fichier de votre dossier item.php thème."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:61
+#, fuzzy
 msgid "Then add the following code on the next line to show the republish date."
-msgstr ""
+msgstr "Trouvez le code suivant dans le fichier de votre dossier item.php thème."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:67
 msgid "How do I edit the email templates?"
-msgstr ""
+msgstr "Comment pour modifier les modèles de Courriel ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:70
+#, fuzzy
 msgid "To edit the email templates you have to go under the Email & Alerts menu. Then you will see the following names in the list email_ad_expire, email_ad_expired, aam_listing_republished."
-msgstr ""
+msgstr "Pour modifier les modèles de courriel, vous devez aller dans le menu de messagerie & alertes. Ensuite, vous verrez vers la fin de la liste email_ad_expire et email_ad_expired."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:73
 msgid "What are the dynamic tags that can be used in the \"email_ad_expire\" template?"
-msgstr ""
+msgstr "Quelles sont les balises dynamiques qui peuvent être utilisés dans le \\\\\\\"email_ad_expire\\\\\\ « modèle ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:79
 msgid "What are the dynamic tags that can be used in the \"email_ad_expired\" template?"
-msgstr ""
+msgstr "Quelles sont les balises dynamiques qui peuvent être utilisés dans le \\\\\\\"email_ad_expired\\\\\\ « modèle ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:85
+#, fuzzy
 msgid "What are the dynamic tags that can be used in the \"aam_listing_republished\" template?"
-msgstr ""
+msgstr "Quelles sont les balises dynamiques qui peuvent être utilisés dans le \\\\\\\"email_ad_expired\\\\\\ « modèle ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/help.php:91
+#, fuzzy
 msgid "What are the dynamic tags that can be used in the \"aam_listing_republished_admin\" template?"
-msgstr ""
+msgstr "Quelles sont les balises dynamiques qui peuvent être utilisés dans le \\\\\\\"email_ad_expired\\\\\\ « modèle ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/log.php:22
 msgid "Log information"
@@ -132,30 +140,32 @@ msgid "Click here to complete the install of Advanced Ad Management."
 msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:157
+#, fuzzy
 msgid "Republication Date: "
-msgstr ""
+msgstr "Réédité Date:"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:184
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:613
 msgid "Republish Ad"
-msgstr ""
+msgstr "republier l'annonce"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:210
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:217
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:563
 msgid "Configure"
-msgstr ""
+msgstr "Configurer"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:211
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:218
 msgid "F.A.Q. / Help"
-msgstr ""
+msgstr "F.A.Q. / Aide"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:212
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:219
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/settings.php:36
+#, fuzzy
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres sauvegardés"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:220
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:577
@@ -167,8 +177,9 @@ msgid "This change will only effect new listings published after you save!"
 msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:556
+#, fuzzy
 msgid "Advanced Ad Management"
-msgstr ""
+msgstr "Aide avancée de gestion Ad_management"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/index.php:617
 msgid "Republish Ad (Debug mode enabled)"
@@ -176,7 +187,7 @@ msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:39
 msgid "Ad expiration successfully set for all categories"
-msgstr ""
+msgstr "Mise à jour  avec succès pour toutes les catégories"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:69
 msgid "All ads successfully re published"
@@ -187,9 +198,23 @@ msgstr ""
 msgid "Repub days must be a number"
 msgstr ""
 
+#: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:107
+#, fuzzy, php-format
+msgid "%d expired ad successfully re published"
+msgid_plural "%d expired ads successfully re published"
+msgstr[0] "Mise à jour  avec succès pour toutes les catégories"
+msgstr[1] "Mise à jour  avec succès pour toutes les catégories"
+
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:109
 msgid "No expired ads to re publishe"
 msgstr ""
+
+#: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:155
+#, fuzzy, php-format
+msgid "%d expired ad was deleted successfully"
+msgid_plural "%d expired ads where deleted successfully"
+msgstr[0] "Mise à jour  avec succès pour toutes les catégories"
+msgstr[1] "Mise à jour  avec succès pour toutes les catégories"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:157
 msgid "No expired ads to delete"
@@ -201,87 +226,95 @@ msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:233
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/settings.php:23
+#, fuzzy
 msgid "Settings Saved"
-msgstr ""
+msgstr "Paramètres sauvegardés"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:247
+#, fuzzy
 msgid "Configuration"
-msgstr ""
+msgstr "Configurer"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:249
 msgid "Step 1"
-msgstr ""
+msgstr "étape 1"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:251
 msgid "Click here to finish the install"
-msgstr ""
+msgstr "Cliquez ici pour terminer l'installation"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:252
 msgid "Done"
-msgstr ""
+msgstr "Fait"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:256
 msgid "Step 2"
-msgstr ""
+msgstr "étape 2"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:260
 msgid "Configure which categories you want your users to be able to republish their ads in."
-msgstr ""
+msgstr "Configurer les catégories  que vous souhaitez que vos utilisateurs puissent  publier leurs annonces En."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:262
 msgid "Manage which categories you want your users to be able to republish their ads in."
-msgstr ""
+msgstr "Gérer les catégories  que vous souhaitez  pour que vos utilisateurs puissent  publier leurs annonces en."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:263
+#, fuzzy
 msgid "categories allow users to republish ads"
-msgstr ""
+msgstr "Catégories  autorisées permettent aux utilisateurs de publier des annonces"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:275
 msgid "Master Expire Settings"
-msgstr ""
+msgstr "saisir Expiration des paramètres"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:277
 msgid "This powerful feature will change the ad expiration settings for"
-msgstr ""
+msgstr "Cette puissante fonctionnalité va changer les paramètres d'expiration des annonces  pour"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:277
 msgid "ALL"
-msgstr ""
+msgstr "TOUS"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:277
+#, fuzzy
 msgid "existing categories and subcategories."
-msgstr ""
+msgstr "catégories et sous-catégories."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:278
 msgid "Enter ad expiration in days (0 = no expiration, max = 999 days)"
-msgstr ""
+msgstr "Entrez l'expiration de l'annonce dans les jours (0 ne = aucune expiration, max = 999 jours)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:279
+#, fuzzy
 msgid "(currently set at "
-msgstr ""
+msgstr "(actuellement fixé à"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:279
+#, fuzzy
 msgid " days)"
-msgstr ""
+msgstr "jours)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:279
 msgid "Updated"
-msgstr ""
+msgstr "mise à jour"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:282
+#, fuzzy
 msgid "Save Master Expire Settings"
-msgstr ""
+msgstr "saisir Expiration des paramètres"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:282
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:327
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:418
 msgid "This action can not be undone. Are you sure you want to continue?"
-msgstr ""
+msgstr "Action irréversible. Etes-vous sûr ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:285
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:330
+#, fuzzy
 msgid "Click here to show the settings."
-msgstr ""
+msgstr "Cliquez ici pour terminer l'installation"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:319
 msgid "Republish all Expired ads."
@@ -292,8 +325,9 @@ msgid "This feature will republish ALL expired ads for the entered amount."
 msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:322
+#, fuzzy
 msgid "Enter the number of days you want to extend the ads. (max = 999 days)"
-msgstr ""
+msgstr "Entrez l'expiration de l'annonce dans les jours (0 ne = aucune expiration, max = 999 jours)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:324
 msgid "The way this works is it takes the current expire date of the expired ads and then adds the set days above to make the new expiration date."
@@ -305,36 +339,37 @@ msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:341
 msgid "Item Republish Settings"
-msgstr ""
+msgstr "annonce  republier les paramètres"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:343
 msgid "Number of days before item expires to send email?"
-msgstr ""
+msgstr "Nombre de jours avant l'expiration de l'élément à envoyer un courriel ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:344
 msgid "Note: emails will only be sent on categories with <br />expiration days greater then 10"
-msgstr ""
+msgstr "Note : courriels seront envoyΘ uniquement sur les catégories avec <br/> jours d'expiration plus puis 10"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:345
 msgid "(default: 4)"
-msgstr ""
+msgstr "(par défaut: 4)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:348
 msgid "Number of times an ad can be republished? (0 = unlimited)"
-msgstr ""
+msgstr "Nombre de fois où qu'une annonce peut être rééditée ? (0 = illimité)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:349
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:380
 msgid "(default: 5)"
-msgstr ""
+msgstr "(par défaut: 5)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:353
 msgid "Paypal republish settings"
-msgstr ""
+msgstr "Paramètres PayPal pour republication de l’annonce"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:355
+#, fuzzy
 msgid "Require users to pay the same fee they paid to publish the ad?"
-msgstr ""
+msgstr "L’utilisateur doit payer la nouvelle publication "
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:357
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:374
@@ -352,27 +387,27 @@ msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:362
 msgid "Number of free republishes before requiring fee to be paid?"
-msgstr ""
+msgstr "Nombre d'annonces  que  l’utilisateur  peut publier  avant la publication payant."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:363
 msgid "Note: This number should be smaller then the \"Number of times an <br />ad can be republished\" unless it is set to zero."
-msgstr ""
+msgstr " Note : Ce nombre doit être inferieur à 3 pour  être republiée  sauf si elle est définie à zéro."
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:364
 msgid "(0 = no free republishes)"
-msgstr ""
+msgstr "(0 ne = aucune republication gratuite)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:365
 msgid "Enable Paypal Pay Per Post option to see these settings"
-msgstr ""
+msgstr "Activer l'option de paiement Paypal par catégorie  pour voir ces paramètres"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:371
 msgid "Ad Expiration Settings"
-msgstr ""
+msgstr "Paramètres d'Expiration de l'annonce"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:372
 msgid "Send an email once the ad has expired?"
-msgstr ""
+msgstr "Envoyer un email une fois que l'annonce a expiré ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:379
 msgid "Send a reminder email XX days before the item is deleted? (0 = do not send reminder email)"
@@ -380,15 +415,15 @@ msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:383
 msgid "Number of days until expired ads are deleted permanently?"
-msgstr ""
+msgstr "Nombre de jours jusqu'à ce que les annonces expirées sont supprimés définitivement ?"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:384
 msgid "Note: If you have the number of days set ot zero you should edit the <br />email template \"email_ad_expired\" accordingly"
-msgstr ""
+msgstr " Remarque : Si vous avez  définit le nombre de jours  à zéro, vous devriez éditer le Courriel email_ad_expired   du module  en conséquence"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:385
 msgid "(0 = never deleted)"
-msgstr ""
+msgstr "(0 = jamais supprimé)"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:390
 msgid "When changing the deletion days it only applys to newly posted listings and republished listings that are posted/republished"
@@ -401,7 +436,7 @@ msgstr ""
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:396
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/settings.php:50
 msgid "Save"
-msgstr ""
+msgstr "Sauvegarder"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:402
 msgid "Ad Cleanup"
@@ -416,8 +451,9 @@ msgid "This feature will delete ALL expired ads for the entered amount."
 msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:414
+#, fuzzy
 msgid "Delete ads that have been expired for more than XX days (XX is the below entered days)"
-msgstr ""
+msgstr "Toutes les annonces immobilières qui ont été périmés pour ' + $(this).val() + ' jours seront immédiatement supprimés!"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:418
 msgid "Delete Expired Ads"
@@ -425,7 +461,7 @@ msgstr ""
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:422
 msgid "Authors"
-msgstr ""
+msgstr "Auteurs"
 
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/admin.php:422
 #: /var/www/osclass30/oc-content/plugins/advanced_ad_management/settings.php:53
@@ -440,3 +476,14 @@ msgstr ""
 msgid "Enable debuging. (Use with caution.)"
 msgstr ""
 
+#~ msgid "Replace the above code with the following code."
+#~ msgstr "Remplacez le code ci-dessus avec le code suivant."
+
+#~ msgid "Published Date: "
+#~ msgstr "Date de publication:"
+
+#~ msgid "Advanced Ad Management Configuration"
+#~ msgstr "Configuration avancée de la  gestion des annonces"
+
+#~ msgid "All"
+#~ msgstr "Tout"

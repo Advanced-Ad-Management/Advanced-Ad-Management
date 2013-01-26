@@ -25,46 +25,73 @@
         <div>
             <fieldset>
                 <legend>
-                    <h1><?php _e('Advanced Ad Management Help', 'adManage'); ?></h1>
+                    <h1><?php _e('Help / FAQ', 'advanced_ad_management'); ?></h1>
                 </legend>
                 <h2>
-                    <?php _e('What is the Advanced Ad Management Plugin?', 'adManage'); ?>
+                    <?php _e('What is the Advanced Ad Management Plugin?', 'advanced_ad_management'); ?>
                 </h2>
                 <p>
-                    <?php _e('The Advanced Ad Management Plugin gives the user the option to republish there ad after it expires. More info coming soon.', 'adManage'); ?>
+                    <?php _e('The Advanced Ad Management Plugin gives the user the option to republish there ad after it expires.', 'advanced_ad_management'); ?>
                 </p>
                 <h2>
-                    <?php _e('Do I need to edit any files for Advanced Ad Management plugin to work?', 'adManage'); ?>
+                    <?php _e('Do I need to edit any files for Advanced Ad Management plugin to work?', 'advanced_ad_management'); ?>
                 </h2>
                 <p>
-                    <?php _e('Yes, You need to edit the user-items.php file and add the following line.', 'adManage'); ?>
+                    <?php _e('Yes, You need to edit the user-items.php file and add the following line.', 'advanced_ad_management'); ?>
                 </p>
                 <pre>
                     &lt;?php if (function_exists('republish_url')) {echo republish_url();} ?&gt;
                 </pre>
                 <p>
-                    <?php _e('Find the following code and add the above code between the tags but before the &lt;/p&gt; tag.','adManage'); ?>
+                    <?php _e('Find the following code and add the above code between the tags but before the &lt;/p&gt; tag.','advanced_ad_management'); ?>
                 </p>
                 <pre>
                     &lt;p class="options"&gt;
                 </pre>
                 <h2>
-                    <?php _e('How do I edit the email templates?', 'adManage'); ?>
+                    <?php _e('How do I show Republished date once an ad has been republished?', 'advanced_ad_management'); ?>
                 </h2>
                 <p>
-                    <?php _e('To edit the email templates you have to go under the Email & Alerts menu. Then you will see towards the end of the list email_ad_expire and email_ad_expired.', 'adManage'); ?>
+                    <?php _e('Find the following code in the item.php file of your theme folder.','advanced_ad_management'); ?>
+                </p>
+                <p>
+                   &nbsp;&nbsp; __('Published date', 'modern') . ': ' . osc_format_date( osc_item_pub_date() )
+                </p>
+                <p>
+                    <?php _e('Then add the following code on the next line to show the republish date.','advanced_ad_management'); ?>
+                </p>
+                <p>
+                   &nbsp;&nbsp;  &lt;?php if (function_exists('aam_pub_repub_date')) {echo aam_pub_repub_date(); } ?&gt;
                 </p>
                 <h2>
-                    <?php _e('What are the dynamic tags that can be used in the "email_ad_expire" template?', 'adManage'); ?>
+                    <?php _e('How do I edit the email templates?', 'advanced_ad_management'); ?>
                 </h2>
                 <p>
-                    <?php echo'{CONTACT_NAME}, {ITEM_TITLE}, {WEB_TITLE}, {REPUBLISH_URL}, {EXPIRE_DAYS}'; ?>
+                    <?php _e('To edit the email templates you have to go under the Email & Alerts menu. Then you will see the following names in the list email_ad_expire, email_ad_expired, aam_listing_republished.', 'advanced_ad_management'); ?>
                 </p>
                 <h2>
-                    <?php _e('What are the dynamic tags that can be used in the "email_ad_expired" template?', 'adManage'); ?>
+                    <?php _e('What are the dynamic tags that can be used in the "email_ad_expire" template?', 'advanced_ad_management'); ?>
                 </h2>
                 <p>
-                    <?php echo '{CONTACT_NAME}, {ITEM_TITLE}, {WEB_TITLE}, {REPUBLISH_URL}, {PERM_DELETED}.'; ?>
+                    <?php echo'{CONTACT_NAME}, {ITEM_TITLE}, {WEB_TITLE}, {REPUBLISH_URL}, {EXPIRE_DAYS}, {ITEM_ID}'; ?>
+                </p>
+                <h2>
+                    <?php _e('What are the dynamic tags that can be used in the "email_ad_expired" template?', 'advanced_ad_management'); ?>
+                </h2>
+                <p>
+                    <?php echo '{CONTACT_NAME}, {ITEM_TITLE}, {WEB_TITLE}, {REPUBLISH_URL}, {PERM_DELETED}, {ITEM_ID}.'; ?>
+                </p>
+                <h2>
+                    <?php _e('What are the dynamic tags that can be used in the "aam_listing_republished" template?', 'advanced_ad_management'); ?>
+                </h2>
+                <p>
+                    <?php echo '{CONTACT_NAME}, {ITEM_TITLE}, {WEB_TITLE}, {REPUB_DAYS}, {ITEM_URL}, {ITEM_ID}.'; ?>
+                </p>
+                <h2>
+                    <?php _e('What are the dynamic tags that can be used in the "aam_listing_republished_admin" template?', 'advanced_ad_management'); ?>
+                </h2>
+                <p>
+                    <?php echo '{CONTACT_NAME}, {USER_NAME}, {ITEM_TITLE}, {WEB_TITLE}, {ITEM_URL}, {ITEM_ID}'; ?>
                 </p>
             </fieldset>
         </div>
