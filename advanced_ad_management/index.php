@@ -176,7 +176,7 @@ if(osc_item_advanced_ad_management_installed() != 1) {
             return osc_isExpired($expDate);
         }
 	}
-	// TODO: make the link show up when the item is almost expired.
+
    // function for displaying the republish link in the users area
    function republish_url() {
       $pCats = osc_is_this_category('advanced_ad_management', osc_item_category_id() );
@@ -230,7 +230,7 @@ if(osc_item_advanced_ad_management_installed() != 1) {
      }
    }
 
-   /** TODO: fix it so it returns right.
+	/*
      * Return the date the item expires
      *
      * @return string
@@ -242,7 +242,7 @@ if(osc_item_advanced_ad_management_installed() != 1) {
 		if($expiration <= 9){ return FALSE; }
 		else{
 			$expireAlert = osc_advanced_ad_management_expire();
-			$date_expiration = strtotime( "-" . $expireAlert . " days", strtotime($item['dt_expiration']) );
+			$date_expiration = strtotime( "-" . $expireAlert . " days", strtotime(date('Y-m-d',strtotime($item['dt_expiration']))) );
 			if(aam_debug(false)) {
 				ModelAAM::newInstance()->insertLog('About to Expire: Date when about to expire email will be sent. ' . date('Y-m-d', $date_expiration), $item['pk_i_id'] );
 			}
@@ -254,7 +254,7 @@ if(osc_item_advanced_ad_management_installed() != 1) {
 				   return FALSE;
 				}
 			} else {
-				if($date_expiration <= strtotime($item['dt_expiration']) && $date_expiration >= strtotime(date('Y-m-d'))) {
+				if($date_expiration <= strtotime(date("Y-m-d")) ) {
 				   return TRUE;
 				} else {
 				   return FALSE;

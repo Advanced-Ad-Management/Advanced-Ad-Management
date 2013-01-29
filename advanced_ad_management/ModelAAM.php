@@ -169,7 +169,11 @@
             $this->dao->from($this->getTable_aam_log() );
 
             $resultAll = $this->dao->get();
-			$count = count($resultAll->result());
+            if(empty($resultAll)) {
+				$count = 0;
+			} else {
+				$count = count($resultAll->result());
+			}
 
             View::newInstance()->_exportVariableToView( 'search_total_items', $count ) ;
 
