@@ -1,7 +1,7 @@
 <?php
 /**
      * Send email to users when their ad is about to expire
-     * 
+     *
      * @param array $item
      * @param string $r_secret
      * @param integer $expire_days
@@ -11,7 +11,7 @@
      * '{CONTACT_NAME}', '{ITEM_TITLE}',
      * '{WEB_TITLE}', '{REPUBLISH_URL}', '{EXPIRE_DAYS}'
      */
-     
+
     function item_expire_email($itemId, $r_secret, $expire_days = '') {
         $mPages = new Page() ;
         $aPage = $mPages->findByInternalName('email_ad_expire') ;
@@ -22,19 +22,19 @@
         } else {
             $content = current($aPage['locale']);
         }
-        
+
         $item = Item::newInstance()->findByPrimaryKey($itemId);
-        
+
         $secret = '';
-        
+
         $secret = '&secret=' . $item['s_secret'];
-        
-        
+
+
         if($r_secret == ''){
 			$repub = ModelAAM::newInstance()->getLimitUser($item['pk_i_id']);
 			$r_secret = $repub['r_secret'];
 		}
-    
+
         $republish_url1    = osc_base_url() . 'oc-content/plugins/advanced_ad_management/item_republish.php?id=' . $item['pk_i_id'] . '&repub=republish&rSecret=' . $r_secret . $secret ;
         $republish_url    = '<a href="' . $republish_url1 . '" >' . $republish_url1 . '</a>';
 
@@ -53,10 +53,10 @@
 
         osc_sendMail($emailParams);
     }
-    
+
     /**
      * Send email to users when their ad has expired
-     * 
+     *
      * @param array $item
      * @param string $r_secret
      * @param integer $permDeleted
@@ -66,7 +66,7 @@
      * '{CONTACT_NAME}', '{ITEM_TITLE}',
      * '{WEB_TITLE}', '{REPUBLISH_URL}', '{PERM_DELETED}'
      */
-     
+
     function item_expired_email($itemId, $r_secret, $permDeleted) {
         $mPages = new Page() ;
         $aPage = $mPages->findByInternalName('email_ad_expired') ;
@@ -77,14 +77,14 @@
         } else {
             $content = current($aPage['locale']);
         }
-        
+
         $item = Item::newInstance()->findByPrimaryKey($itemId);
-        
+
         $secret = '';
-        
+
         $secret = '&secret=' . $item['s_secret'];
-              
-        
+
+
         $republish_url1    = osc_base_url() . 'oc-content/plugins/advanced_ad_management/item_republish.php?id=' . $item['pk_i_id'] . '&repub=republish&rSecret=' . $r_secret . $secret ;
         $republish_url    = '<a href="' . $republish_url1 . '" >' . $republish_url1 . '</a>';
 
@@ -105,8 +105,8 @@
     }
 
     /**
-     * Send email to users conferming that there ad has been re published
-     * 
+     * Send email to users confirming that there ad has been re published
+     *
      * @param array $item
      * @param string $r_secret
      * @param integer $expire_days
@@ -116,7 +116,7 @@
      * '{CONTACT_NAME}', '{ITEM_TITLE}',
      * '{WEB_TITLE}', '{REPUBLISH_URL}', '{EXPIRE_DAYS}'
      */
-     
+
     function confirm_email($itemId, $repub_days = 0) {
         $mPages = new Page() ;
         $aPage = $mPages->findByInternalName('aam_listing_republished') ;
@@ -127,8 +127,8 @@
         } else {
             $content = current($aPage['locale']);
         }
-        
-        $item = Item::newInstance()->findByPrimaryKey($itemId);                                    
+
+        $item = Item::newInstance()->findByPrimaryKey($itemId);
         $item_url = osc_item_url_advanced($itemId);
 
         $words   = array();
@@ -146,10 +146,10 @@
 
         osc_sendMail($emailParams);
     }
-    
+
     /**
-     * Send email to the admin conferming that a user has re published their listing.
-     * 
+     * Send email to the admin confirming that a user has re published their listing.
+     *
      * @param array $item
      * @param string $r_secret
      * @param integer $expire_days
@@ -159,7 +159,7 @@
      * '{CONTACT_NAME}', '{ITEM_TITLE}',
      * '{WEB_TITLE}', '{REPUBLISH_URL}', '{EXPIRE_DAYS}'
      */
-     
+
     function admin_confirm_email($itemId) {
         $mPages = new Page() ;
         $aPage = $mPages->findByInternalName('aam_listing_republished_admin') ;
@@ -170,8 +170,8 @@
         } else {
             $content = current($aPage['locale']);
         }
-        
-        $item = Item::newInstance()->findByPrimaryKey($itemId);                                    
+
+        $item = Item::newInstance()->findByPrimaryKey($itemId);
         $item_url = osc_item_url_advanced($itemId);
 
         $words   = array();

@@ -46,6 +46,9 @@ if(osc_item_advanced_ad_management_installed() != 1) {
       //added in v2.1 12-20-12
       osc_set_preference('advanced_ad_management_reminderDays', '5', 'plugin-item_advanced_ad_management', 'INTEGER');
       osc_set_preference('aam_cron_last_run', '', 'plugin-item_advanced_ad_management', 'INTEGER');
+      //added in v2.5 01-28-12
+      osc_set_preference('aam_deactivated_run_time', 'never', 'plugin-item_advanced_ad_management', 'STRING');
+      osc_set_preference('aam_deactivated_days', '0', 'plugin-item_advanced_ad_management', 'INTEGER');
 
       @fopen(osc_content_path() . 'uploads/AAM.log', 'a');
 
@@ -93,6 +96,9 @@ if(osc_item_advanced_ad_management_installed() != 1) {
       osc_delete_preference('advanced_ad_management_reminderDays', 'plugin-item_advanced_ad_management');
       //added in v2.2 01-10-13
       osc_delete_preference('aam_cron_last_run', 'plugin-item_advanced_ad_management');
+      //added in v2.2 01-10-13
+      osc_delete_preference('aam_deactivated_run_time', 'plugin-item_advanced_ad_management');
+      osc_delete_preference('aam_deactivated_days', 'plugin-item_advanced_ad_management');
 
       //remove email templates
       Page::newInstance()->deleteByInternalName('aam_listing_republished_admin');
@@ -144,6 +150,12 @@ if(osc_item_advanced_ad_management_installed() != 1) {
     }
     function aam_reminder_days() {
         return(osc_get_preference('advanced_ad_management_reminderDays', 'plugin-item_advanced_ad_management')) ;
+    }
+    function aam_non_active_run_time() {
+        return(osc_get_preference('aam_deactivated_run_time', 'plugin-item_advanced_ad_management')) ;
+    }
+    function aam_non_active_days() {
+        return(osc_get_preference('aam_deactivated_days', 'plugin-item_advanced_ad_management')) ;
     }
     function aam_debug($adminLogged = TRUE) {
 		if($adminLogged) {
@@ -436,6 +448,20 @@ if(osc_item_advanced_ad_management_installed() != 1) {
 					ModelAAM::newInstance()->insertLog('Delete expired ads disabled.', $itemA['pk_i_id']);
 				}
 
+				//delete non activated ads.
+				if($pCats && aam_non_active_run_time() == 'day') {
+				   $item = Item::newInstance()->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s') OR (i.fk_i_user_id = '%d')) AND b_active = 0", $itemA['pk_i_id'], $itemA['s_secret'], $itemA['fk_i_user_id']);
+	               if (count($item) == 1 && strtotime("-" . aam_non_active_days() ." days") >= strtotime($item[0]['dt_pub_date']) ) {
+	                  $mItems = new ItemActions(true);
+	                  $success = $mItems->delete($item[0]['s_secret'], $item[0]['pk_i_id']);
+	                  if($success) {
+	                     ModelAAM::newInstance()->insertLog('Non active listing deleted. Successful.', $item[0]['pk_i_id']);
+	                  } else {
+						 ModelAAM::newInstance()->insertLog('Non active listing could not be deleted; listing not found.', $itemA['pk_i_id']);
+	                  } // end else not successful
+	               }// end count of items that need to be deleted.
+				}
+
 		      }//end of foreach
 		      ModelAAM::newInstance()->insertLog('Cron complete.');
 		      // to store more or less rows in the database either increase the number to store more in database
@@ -469,6 +495,30 @@ if(osc_item_advanced_ad_management_installed() != 1) {
 		}
     }  //end item_advanced_ad_management_cron() function.
 
+	//short: weekly cron
+    function item_advanced_ad_management_cron_weekly(){
+	    $allItems = ModelAAM::newInstance()->getAllItemsCron();
+	    foreach($allItems as $itemA) {
+
+	        $pCats = osc_is_this_category('advanced_ad_management', $itemA['fk_i_category_id'] );
+
+			//delete non activated ads.
+			if($pCats && aam_non_active_run_time() == 'week') {
+			   ModelAAM::newInstance()->insertLog('Weekly cron job started.');
+			   $item = Item::newInstance()->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s') OR (i.fk_i_user_id = '%d')) AND b_active = 0", $itemA['pk_i_id'], $itemA['s_secret'], $itemA['fk_i_user_id']);
+			   if (count($item) == 1 && strtotime("-" . aam_non_active_days() ." days") >= strtotime($item[0]['dt_pub_date']) ) {
+				  $mItems = new ItemActions(true);
+				  $success = $mItems->delete($item[0]['s_secret'], $item[0]['pk_i_id']);
+				  if($success) {
+					 ModelAAM::newInstance()->insertLog('Non active listing deleted. Successful.', $item[0]['pk_i_id']);
+				  } else {
+					 ModelAAM::newInstance()->insertLog('Non active listing could not be deleted; listing not found.', $itemA['pk_i_id']);
+				  } // end else not successful
+			   }// end count of items that need to be deleted.
+			   ModelAAM::newInstance()->insertLog('Weekly cron job done.');
+			}
+		}
+	} // end weekly cron
 
    require_once('AAM_emails.php');
 
@@ -695,6 +745,7 @@ if(osc_item_advanced_ad_management_installed() != 1) {
 	}
     // Add cron
     osc_add_hook('cron_daily', 'item_advanced_ad_management_cron');
+    osc_add_hook('cron_weekly', 'item_advanced_ad_management_cron_weekly');
     // run after item is posted
     osc_add_hook('item_form_post','item_advanced_ad_management_posted');
     // run hook when item is deleted

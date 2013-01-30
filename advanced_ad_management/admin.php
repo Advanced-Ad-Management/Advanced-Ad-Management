@@ -161,6 +161,61 @@
     }
     //end delete all expired ads
 
+    // delete all non active ads
+    $nonActiveDays = Params::getParam('cleanDeactiveDays');
+    $runTime = Params::getParam('cleanDeactiveRunTime');
+    if( Params::getParam('option') == 'adCleanupDeactive' && $nonActiveDays != '' )
+    {
+		osc_set_preference('aam_deactivated_run_time', $runTime, 'plugin-item_advanced_ad_management', 'STRING');
+		if($runTime == 'day' || $runTime == 'week'){
+			osc_set_preference('aam_deactivated_days', $nonActiveDays, 'plugin-item_advanced_ad_management', 'INTEGER');
+		}
+		osc_reset_preferences();
+
+		if(osc_validate_number($nonActiveDays) ) {
+			if(aam_debug(false)){
+				ModelAAM::newInstance()->insertLog('Delete all non active ads started.');
+			}
+
+			$i = 0;
+
+		    $allItems = ModelAAM::newInstance()->getAllItemsCron();
+
+		    foreach($allItems as $itemA) {
+				$pCats = osc_is_this_category('advanced_ad_management', $itemA['fk_i_category_id'] );
+				if($pCats) {
+					   $item = Item::newInstance()->listWhere("i.pk_i_id = '%s' AND ((i.s_secret = '%s') OR (i.fk_i_user_id = '%d')) AND b_active = 0", $itemA['pk_i_id'], $itemA['s_secret'], $itemA['fk_i_user_id']);
+		               if (count($item) == 1 && strtotime("-" . $nonActiveDays ." days") >= strtotime($item[0]['dt_pub_date']) ) {
+		                  $mItems = new ItemActions(true);
+		                  $success = $mItems->delete($item[0]['s_secret'], $item[0]['pk_i_id']);
+		                  if($success) {
+		                     ModelAAM::newInstance()->insertLog('Non active listing deleted. Successful.', $item[0]['pk_i_id']);
+		                     $i++;
+		                  } else {
+							 ModelAAM::newInstance()->insertLog('Non active listing could not be deleted; listing not found.', $itemA['pk_i_id']);
+							 if(aam_debug(false) ){
+								ModelAAM::newInstance()->insertLog('Debug: secret ' . $item[0]['s_secret'] . ' itemId ' . $item[0]['pk_i_id'], $itemA['pk_i_id']);
+							 }
+		                  } // end else not successful
+		               }// end count of items that need to be deleted.
+				}
+			}
+			if($i > 0) {
+				osc_add_flash_ok_message(sprintf(_n('%d Non activated ad was deleted successfully', '%d Non activated ads where deleted successfully', $i, 'advanced_ad_management'), $i),'admin');
+			} else {
+				osc_add_flash_warning_message(__('No non activated ads to delete', 'advanced_ad_management'),'admin');
+			}
+			if(aam_debug(false)){
+				ModelAAM::newInstance()->insertLog('Delete all non active ads finished.');
+			}
+		} else {
+			osc_add_flash_error_message(__('Non active days must be a number', 'advanced_ad_management'),'admin');
+		}
+
+	echo '<script>location.href="'.osc_admin_render_plugin_url('advanced_ad_management/admin.php').'"</script>';
+    }
+    //end delete all non active ads
+
     $expire_days            = '';
     $dao_preference = new Preference();
     if(Params::getParam('expire') != '') {
@@ -409,6 +464,37 @@
 	        <br />
 	        <br />
 	        <input type="submit" value="<?php _e('Delete Expired Ads', 'advanced_ad_management'); ?>" onclick="javascript:return confirm('<?php _e('This action can not be undone. Are you sure you want to continue?', 'advanced_ad_management'); ?>')" />
+        </fieldset>
+	</form>
+	<br />
+	<form name="adCleanupDeactiv" action="<?php echo osc_admin_base_url(true); ?>" method="POST" enctype="multipart/form-data" >
+		<input type="hidden" name="page" value="plugins" />
+		<input type="hidden" name="action" value="renderplugin" />
+		<input type="hidden" name="file" value="advanced_ad_management/admin.php" />
+		<input type="hidden" name="option" value="adCleanupDeactive" />
+
+		<fieldset style="border: 1px solid #ccc; padding:10px; background: #ddd; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px;">
+	        <legend><?php _e('Remove Ads that have not been activated.','advanced_ad_management'); ?></legend>
+
+	        <label for="cleanDeactiveDays" style="font-weight: bold;"><?php _e('Delete non activated ads that where posted XX days ago and older. (XX is the below entered days)', 'advanced_ad_management'); ?></label>:<br />
+	        <input type="text" name="cleanDeactiveDays" id="cleanDeactiveDays" value="<?php if(aam_non_active_run_time() != 'never') { echo aam_non_active_days(); } ?>" />
+	        <br />
+	        <br />
+	        <label for="cleanDeactiveRunTime" style="font-weight: bold;"><?php _e('Do you want this to a reoccurring event?', 'advanced_ad_management'); ?></label>:<br />
+	        <select name="cleanDeactiveRunTime">
+				<option value="never"><?php _e('No, run just this once','advanced_ad_management'); ?></option>
+				<option <?php if(aam_non_active_run_time() == 'day') { echo 'selected';} ?> value="day"><?php _e('Yes, Daily','advanced_ad_management'); ?></option>
+				<option <?php if(aam_non_active_run_time() == 'week') { echo 'selected';} ?> value="week"><?php _e('Yes, Weekly','advanced_ad_management'); ?></option>
+	        </select>
+	        <br />
+	        <br />
+			<?php if(aam_non_active_run_time() != 'never' && aam_non_active_run_time() != '') { ?>
+				<div id="flashmessage" class="flashmessage flashmessage-inline flashmessage-ok" style="color: #505050; display: block; ">
+					<p><?php echo __('Non activated ads that where published', 'advanced_ad_management') . ' ' . aam_non_active_days() . ' ' . __('days ago and older will be automatically deleted every', 'advanced_ad_management') . ' ' . aam_non_active_run_time(); ?></p>
+				</div>
+				<br />
+			<?php } ?>
+	        <input type="submit" value="<?php _e('Delete Non Active Ads', 'advanced_ad_management'); ?>" onclick="javascript:return confirm('<?php _e('This action can not be undone. Are you sure you want to continue?', 'advanced_ad_management'); ?>')" />
         </fieldset>
 	</form>
 	<br />
